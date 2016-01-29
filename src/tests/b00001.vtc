@@ -1,0 +1,36 @@
+varnishtest "Test hmac functions"
+
+server s1 {
+	rxreq
+	txresp
+} -start
+
+varnish v1 -vcl+backend {
+	import crypto from "${vmod_topbuild}/src/.libs/libvmod_crypto.so";
+
+	sub vcl_deliver {
+		set resp.http.md5 = crypto.hmac_md5(req.http.key,
+		    req.http.message);
+		set resp.http.sha1 = crypto.hmac_sha1(req.http.key,
+		    req.http.message);
+		set resp.http.sha224 = crypto.hmac_sha224(req.http.key,
+		    req.http.message);
+		set resp.http.sha256 = crypto.hmac_sha256(req.http.key,
+		    req.http.message);
+		set resp.http.sha384 = crypto.hmac_sha384(req.http.key,
+		    req.http.message);
+		set resp.http.sha512 = crypto.hmac_sha512(req.http.key,
+		    req.http.message);
+	}
+} -start
+
+client c1 {
+	txreq -hdr "key: Jefe" -hdr "message: what do ya want for nothing?"
+	rxresp
+	expect resp.http.md5 == "0x750c783e6ab0b503eaa86e310a5db738"
+	expect resp.http.sha1 == "0xeffcdf6ae5eb2fa2d27416d5f184df9c259a7c79"
+	expect resp.http.sha224 == "0xa30e01098bc6dbbf45690f3a7e9e6d0f8bbea2a39e6148008fd05e44"
+	expect resp.http.sha256 == "0x5bdcc146bf60754e6a042426089575c75a003f089d2739839dec58b964ec3843"
+	expect resp.http.sha384 == "0xaf45d2e376484031617f78d2b58a6b1b9c7ef464f5a01b47e42ec3736322445e8e2240ca5e69e2c78b3239ecfab21649"
+	expect resp.http.sha512 == "0x164b7a7bfcf819e2e395fbe73b56e0a387bd64222e831fd610270cd7ea2505549758bf75c05a994a6d034f65f8f0e6fdcaeab1a34d4a6b4b636e070a38bce737"
+} -run
