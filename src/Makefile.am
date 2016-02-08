@@ -36,11 +36,11 @@ CLEANFILES = $(builddir)/vcc_if.c \
 	$(builddir)/vmod_crypto.rst \
 	$(builddir)/$(dist_man_MANS)
 
-check-local:
 if USE_LCOV
+check-local:
 	$(LCOV) -c -d .libs -o .libs/$(PACKAGE).info
 	$(GENHTML) -o lcov .libs/$(PACKAGE).info
-endif
 
 clean-local:
 	rm -rf lcov
+endif
