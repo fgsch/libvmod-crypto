@@ -25,6 +25,7 @@ varnish v1 -vcl+backend {
 } -start
 
 client c1 {
+	# Test vectors from RFC2202 & RFC4231
 	txreq -hdr "key: Jefe" -hdr "message: what do ya want for nothing?"
 	rxresp
 	expect resp.http.md5 == "0x750c783e6ab0b503eaa86e310a5db738"
