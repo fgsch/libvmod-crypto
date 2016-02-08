@@ -185,6 +185,15 @@ vmod_hash_##n(VRT_CTX, VCL_STRING s)					\
 VMOD_CRYPTO_HASH_ALL
 #undef H
 
+#undef VMOD_CRYPTO_HASH_ALL
+#define VMOD_CRYPTO_HASH_ALL						\
+H(md5, MD5)								\
+H(sha1, SHA1)								\
+H(sha224, SHA224)							\
+H(sha256, SHA256)							\
+H(sha384, SHA384)							\
+H(sha512, SHA512)
+
 #define H(n,p)								\
 VCL_STRING __match_proto__(td_crypto_hmac_##n)				\
 vmod_hmac_##n(VRT_CTX, VCL_STRING key, VCL_STRING message)		\
