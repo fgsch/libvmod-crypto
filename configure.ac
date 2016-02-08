@@ -12,6 +12,14 @@ AC_DISABLE_STATIC
 AC_PROG_CC_C99
 AC_PROG_LIBTOOL
 
+AC_ARG_ENABLE([gcov],
+  [AS_HELP_STRING([--enable-gcov],
+     [enable code coverage analysis (default=no)])],
+  [AC_PATH_PROG([LCOV], [lcov])
+   AC_PATH_PROG([GENHTML], [genhtml])
+   CFLAGS="$CFLAGS -fprofile-arcs -ftest-coverage"])
+AM_CONDITIONAL(USE_LCOV, [test x$LCOV != x && test x$GENHTML != x])
+
 AC_PATH_PROGS([PYTHON], [python3 python2.7 python2.6])
 test -z "$PYTHON" && AC_MSG_ERROR([Python 2.6 or greater is required.])
 
