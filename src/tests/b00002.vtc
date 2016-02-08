@@ -1,0 +1,35 @@
+varnishtest "Test error cases"
+
+server s1 {
+	rxreq
+	txresp
+} -start
+
+varnish v1 -vcl+backend {
+	import crypto from "${vmod_topbuild}/src/.libs/libvmod_crypto.so";
+
+	sub vcl_deliver {
+		set resp.http.no-input =
+		    crypto.hash_md5(req.http.existent);
+		set resp.http.no-key =
+		    crypto.hmac_md5(req.http.existent, "foo");
+		set resp.http.no-msg =
+		    crypto.hmac_sha1("foo", req.http.existent);
+	}
+} -start
+
+logexpect l1 -v v1 -g raw -d 1 {
+	expect * 1001	Error	"crypto.hash_md5: No input"
+	expect * =	Error	"crypto.hmac_md5: Missing key"
+	expect * =	Error	"crypto.hmac_sha1: Missing message"
+} -start
+
+client c1 {
+	txreq
+	rxresp
+	expect resp.http.no-input == ""
+	expect resp.http.no-key == ""
+	expect resp.http.no-msg == ""
+} -run
+
+logexpect l1 -wait
