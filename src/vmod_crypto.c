@@ -56,7 +56,7 @@ typedef int init_f(void *);
 typedef int update_f(void *, const void *, unsigned long);
 typedef int final_f(unsigned char *, void *);
 
-struct hash_tbl {
+struct vmod_crypto_hashspec {
 	const char	*name;
 	int		 cblock;
 	int		 digest_length;
@@ -67,7 +67,8 @@ struct hash_tbl {
 
 
 static char *
-hash_common(VRT_CTX, const struct hash_tbl *h, void *c, VCL_STRING s)
+hash_common(VRT_CTX, const struct vmod_crypto_hashspec *h, void *c,
+    VCL_STRING s)
 {
 	unsigned char m[DIGEST_LENGTH_MAX];
 	char *p;
@@ -94,8 +95,8 @@ hash_common(VRT_CTX, const struct hash_tbl *h, void *c, VCL_STRING s)
 }
 
 static char *
-hmac_common(VRT_CTX, const struct hash_tbl *h, void *c, VCL_STRING key,
-    VCL_STRING message)
+hmac_common(VRT_CTX, const struct vmod_crypto_hashspec *h, void *c,
+    VCL_STRING key, VCL_STRING message)
 {
 	unsigned char i_pad[CBLOCK_MAX], o_pad[CBLOCK_MAX];
 	unsigned char m[DIGEST_LENGTH_MAX];
@@ -149,7 +150,7 @@ hmac_common(VRT_CTX, const struct hash_tbl *h, void *c, VCL_STRING key,
 	return (p);
 }
 
-#define VMOD_CRYPTO_HASH_ALL						\
+#define VMOD_CRYPTO_HASHSPEC						\
 H(md4, MD4)								\
 H(md5, MD5)								\
 H(ripemd160, RIPEMD160)							\
@@ -161,17 +162,17 @@ H(sha512, SHA512)							\
 H(whirlpool, WHIRLPOOL)
 
 #define H(n,p) 								\
-HASH_##p,
+h_##n,
 enum {
-VMOD_CRYPTO_HASH_ALL
+VMOD_CRYPTO_HASHSPEC
 };
 #undef H
 
 #define H(n,p) 								\
 { #n, p##_CBLOCK, p##_DIGEST_LENGTH,					\
   (init_f *)p##_Init, (update_f *)p##_Update, (final_f *)p##_Final },
-const struct hash_tbl hash_tbl[] = {
-VMOD_CRYPTO_HASH_ALL
+const struct vmod_crypto_hashspec vmod_crypto_hashspec[] = {
+VMOD_CRYPTO_HASHSPEC
 };
 #undef H
 
@@ -180,13 +181,13 @@ VCL_STRING __match_proto__(td_crypto_hash_##n)				\
 vmod_hash_##n(VRT_CTX, VCL_STRING s)					\
 {									\
 	p##_CTX c;							\
-	return (hash_common(ctx, &hash_tbl[HASH_##p], &c, s));		\
+	return (hash_common(ctx, &vmod_crypto_hashspec[h_##n], &c, s));	\
 }
-VMOD_CRYPTO_HASH_ALL
+VMOD_CRYPTO_HASHSPEC
 #undef H
 
-#undef VMOD_CRYPTO_HASH_ALL
-#define VMOD_CRYPTO_HASH_ALL						\
+#undef VMOD_CRYPTO_HASHSPEC
+#define VMOD_CRYPTO_HASHSPEC						\
 H(md5, MD5)								\
 H(sha1, SHA1)								\
 H(sha224, SHA224)							\
@@ -199,8 +200,8 @@ VCL_STRING __match_proto__(td_crypto_hmac_##n)				\
 vmod_hmac_##n(VRT_CTX, VCL_STRING key, VCL_STRING message)		\
 {									\
 	p##_CTX c;							\
-	return (hmac_common(ctx, &hash_tbl[HASH_##p], &c, key,		\
+	return (hmac_common(ctx, &vmod_crypto_hashspec[h_##n], &c, key, \
 	    message));							\
 }
-VMOD_CRYPTO_HASH_ALL
+VMOD_CRYPTO_HASHSPEC
 #undef H
