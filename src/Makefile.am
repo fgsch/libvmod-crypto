@@ -1,4 +1,6 @@
 
+AM_TESTS_ENVIRONMENT = PATH=$(VARNISH_BINDIR):$(VARNISH_SBINDIR):$$PATH
+
 vmoddir = $(VMOD_DIR)
 vmod_LTLIBRARIES = libvmod_crypto.la
 
@@ -15,7 +17,7 @@ nodist_libvmod_crypto_la_SOURCES = \
 dist_man_MANS = vmod_crypto.3
 
 VTC_LOG_COMPILER = $(VARNISHTEST) -v \
-	-Dvarnishd=$(VARNISHD) -Dvmod_topbuild=$(abs_top_builddir)
+	-Dvmod_topbuild=$(abs_top_builddir)
 TEST_EXTENSIONS = .vtc
 TESTS = @VMOD_TESTS@
 
