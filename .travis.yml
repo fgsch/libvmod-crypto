@@ -22,6 +22,3 @@ notifications:
   webhooks:
     urls:
       secure: "NVcvAxM1t+x1dXJmLxBJ1p0E6wVeZqCxMaoyN4f5WblIV3q6EoJBTNaYyJFuclJ5KCxiHtII0DrCEng/uasKoMX6TO9Ud3d+i9ZCRtcJuuTyJ1zJn2dVwVtBm0sf3ia+yo1Xydp4Mzz/K2VPNvWUFCt9CX7uvdJEXNF7RmoiXFu/uyeOMoBI40Yx7DOJ8GTyGkQW5l0eCFFCQOym9lYlmsfTYXCjDT4eKAW42ydUEiegEf0/PT1dwNVo+3YQGdrS12aLgmGjwo0iWY4vKT4+qPyhxxHVLL33QU4qFqg6dQUpI8hykleHWgARy7znl6/AvMifc6iPZ1VmAQ9sE1CJNoQyJ8TpA6Lj2W4VP+0RXZ60JdLlkoWs/xHfVDQSgr9ni1A3YmjkHfCNlMoYpUrtBllDWq4vGle6O9/OGW1+ae/MGLPgKhTKJ8xTkPeGFilz4uNfCNtHjxRj2ytl/gVXk9gwbVnG1qkAjR8oTjC2dx0WkqlN9wij5pnG0op8y9LNhSn36EYciCptLtYIo8ktuuT+Qmwo1T7Qk+NG+wDHP5A4yS264PpHo4O/+ATVRpLRxCk+RMEL/2L7r7zEuDb7ZaE94YtLzYWvl9LpwmJ2/27486URZIvsq7F005rrSZm5sOYzjc7LYQCTwKjo7TxXAiJcE/VYmZfERAHkelBAidg="
-    on_success: change
-    on_failure: always
-    on_start: never
