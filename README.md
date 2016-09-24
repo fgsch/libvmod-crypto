@@ -2,7 +2,7 @@ libvmod-crypto
 ==============
 
 [![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/fgsch/libvmod-crypto?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-[![Build Status](https://travis-ci.org/fgsch/libvmod-crypto.svg?branch=master)](https://travis-ci.org/fgsch/libvmod-crypto)
+[![Build Status](https://travis-ci.org/fgsch/libvmod-crypto.svg?branch=devel)](https://travis-ci.org/fgsch/libvmod-crypto)
 
 ## About
 
