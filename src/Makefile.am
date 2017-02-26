@@ -1,5 +1,5 @@
 
-AM_TESTS_ENVIRONMENT = PATH=$(VARNISH_BINDIR):$(VARNISH_SBINDIR):$$PATH
+TESTS_ENVIRONMENT = PATH=$(VARNISH_BINDIR):$(VARNISH_SBINDIR):$$PATH
 
 vmoddir = $(VMOD_DIR)
 vmod_LTLIBRARIES = libvmod_crypto.la
@@ -23,7 +23,9 @@ TESTS = @VMOD_TESTS@
 
 $(libvmod_crypto_la_OBJECTS): vcc_if.h
 
-vcc_if.c vcc_if.h vmod_crypto.man.rst: $(VMODTOOL) $(top_srcdir)/src/vmod.vcc
+vcc_if.h vmod_crypto.man.rst vmod_crypto.rst: vcc_if.c
+
+vcc_if.c: $(VMODTOOL) $(top_srcdir)/src/vmod.vcc
 	$(PYTHON) $(VMODTOOL) $(top_srcdir)/src/vmod.vcc
 
 vmod_crypto.3: vmod_crypto.man.rst
