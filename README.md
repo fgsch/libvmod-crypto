@@ -9,6 +9,8 @@ libvmod-crypto
 A Varnish 4 and 5 VMOD to compute message digests and keyed-hash message
 authentication codes (HMAC).
 
+For Varnish master refer to the devel branch.
+
 ## Requirements
 
 To build this VMOD you will need:
